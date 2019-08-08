@@ -13,25 +13,23 @@ const db = require('./data/db');
 // }) >>>>>>>> test
 
 server.post('/api/users', (req, res) => {
-    const user= req.body;
-        db.add(user)
-        .then(user => {
-            if (user) {
-                res.json(user);
-            }
-            else{
-                res.status(400).json({
-                    errorMessage: "Please provide name and bio for the user." 
-                })
-            }
-            }
-        )
-        .catch(err=> {
-            res.status(500).json({
-                err: err
+    const { name, bio }= req.body;
+        if (!name || !bio) {
+            res.status(400).json({
+                errorMessage: "Please provide name and bio for the user."
+            })}
+        else {
+            users.add(req.body)
+                .then(user => {
+                    res.status(201).json(user);
             })
-        })
-})
+            .catch(err=> {
+                res.status(500).json({
+                    err: err,
+                    errorMessage: 'There was an error while saving the user to the database'
+                })
+            })
+}})
 
 
 
