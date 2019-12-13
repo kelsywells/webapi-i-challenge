@@ -1,16 +1,20 @@
 // implement your API here
 const express = require('express');
+const host= process.env.HOST || "0.0.0.0"
+const port= process.env.PORT || 4000;
+require('dotenv').config()
 
 const server = express();
 
-server.listen(4000, () => {
-    console.log('Server is running on port 4000...');
+server.listen(port, host, () => {
+    console.log(`Server is running on port ${port}`);
 })
 
 const db = require('./data/db');
-// server.get('/', (req, res) => {
-//     res.send('<h2>Hello World</h2>');
-// }) >>>>>>>> test
+
+server.get('/', (req, res) => {
+    res.send('<h2>Hello World</h2>');
+}) 
 
 server.post('/api/users', (req, res) => {
     const { name, bio }= req.body;
@@ -73,7 +77,7 @@ server.delete('/api/users/:id', (req, res) => {
         .then(deletedUser => {
             if (deletedUser){
                 res.status(200).json({
-                message: 'the user was deleted.';
+                message: 'the user was deleted.'
             })
             }
             else{
